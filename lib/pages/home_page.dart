@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vertualcardview/pages/form_page.dart';
 
 class Homepage extends StatefulWidget {
   static const String routeName = '/';
@@ -20,15 +21,19 @@ class _HomepageState extends State<Homepage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, FromPage.routeName);
+        },
         shape: CircleBorder(),
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: BottomAppBar(
+        padding: EdgeInsets.zero,
         shape: const CircularNotchedRectangle(),
         notchMargin: 10,
         clipBehavior: Clip.antiAlias,
         child: BottomNavigationBar(
+              backgroundColor: Colors.blue.shade100,
             onTap: (index) {
               setState(() {
                 selectedIndex = index;
