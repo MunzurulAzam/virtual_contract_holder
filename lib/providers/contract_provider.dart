@@ -8,11 +8,18 @@ class ContractProvider extends ChangeNotifier{
 
   Future<int> insertContract(ContactModel contactModel) async{
     final rowId = await db.insertContract(contactModel);
+    contactModel.id = rowId;
+    contractList.add(contactModel);
+    notifyListeners();
     return rowId;
   }
 
   Future<void> getAllContractsData() async{
     contractList =  await db.getAllContract();
     notifyListeners();
+  }
+
+  Future<int> deleteContract(int id) {
+    return db.deleteContract(id);
   }
 }

@@ -65,9 +65,12 @@ class _HomepageState extends State<Homepage> {
               itemCount: provider.contractList.length,
               itemBuilder: (context, index) {
                 final contract = provider.contractList[index];
-                return ListTile(
-                  title: Text(contract.name),
-                  trailing: Icon(contract.favorite? Icons.favorite : Icons.favorite_border),
+                return Dismissible(
+                  key: UniqueKey(),
+                  child: ListTile(
+                    title: Text(contract.name),
+                    trailing: Icon(contract.favorite? Icons.favorite : Icons.favorite_border),
+                  ),
                 );
               },
           );
