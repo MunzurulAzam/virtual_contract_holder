@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vertualcardview/pages/form_page.dart';
+import 'package:vertualcardview/providers/contract_provider.dart';
 
 class Homepage extends StatefulWidget {
   static const String routeName = '/';
@@ -12,6 +14,15 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   int selectedIndex = 0;
+  bool isFirst = true;
+  @override
+  void didChangeDependencies() {
+    if(isFirst){
+      Provider.of<ContractProvider>(context, listen: false).getAllContractsData();
+    }
+    isFirst = false;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +56,23 @@ class _HomepageState extends State<Homepage> {
               BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorite'),
             ]),
       ),
-      body: Center(child: Text('homepage')),
+      body: Consumer<ContractProvider>(
+        builder: (context, provider, _) {
+          if(provider.contractList.isEmpty){
+            return const Center(child: Text('Nothing To Show'),);
+          }
+          return ListView.builder(
+              itemCount: provider.contractList.length,
+              itemBuilder: (context, index) {
+                final contract = provider.contractList[index];
+                return ListTile(
+                  title: Text(contract.name),
+                  trailing: Icon(contract.favorite? Icons.favorite : Icons.favorite_border),
+                );
+              },
+          );
+        },
+      )
     );
   }
 }

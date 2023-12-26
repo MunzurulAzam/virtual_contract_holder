@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vertualcardview/models/contact_model.dart';
+import 'package:vertualcardview/providers/contract_provider.dart';
 
 class FromPage extends StatefulWidget {
   static const String routeName = '/fromPage';
@@ -62,7 +65,7 @@ class _FromPageState extends State<FromPage> {
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: TextFormField(
               keyboardType: TextInputType.phone,
-              controller: nameController,
+              controller: mobileController,
               decoration: InputDecoration(
                 labelText: 'Mobile Number',
                 filled: true,
@@ -82,7 +85,7 @@ class _FromPageState extends State<FromPage> {
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: TextFormField(
               keyboardType: TextInputType.emailAddress,
-              controller: nameController,
+              controller: emailController,
               decoration: InputDecoration(
                 labelText: 'Email',
                 filled: true,
@@ -94,7 +97,7 @@ class _FromPageState extends State<FromPage> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: TextFormField(
-              controller: nameController,
+              controller: companyController,
               decoration: InputDecoration(
                 labelText: 'Company Name',
                 filled: true,
@@ -107,7 +110,7 @@ class _FromPageState extends State<FromPage> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: TextFormField(
-              controller: nameController,
+              controller: designationController,
               decoration: InputDecoration(
                 labelText: 'Designation',
                 filled: true,
@@ -120,7 +123,7 @@ class _FromPageState extends State<FromPage> {
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: TextFormField(
               keyboardType: TextInputType.streetAddress,
-              controller: nameController,
+              controller: addressController,
               decoration: InputDecoration(
                 labelText: 'Street Adress',
                 filled: true,
@@ -133,7 +136,7 @@ class _FromPageState extends State<FromPage> {
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: TextFormField(
               keyboardType: TextInputType.url,
-              controller: nameController,
+              controller: websiteController,
               decoration: InputDecoration(
                 labelText: 'Website',
                 filled: true,
@@ -154,7 +157,22 @@ class _FromPageState extends State<FromPage> {
 
   void _saveContract() async {
     if (formKey.currentState != null && formKey.currentState!.validate()) {
-      print('***************************ok');
+      final contract = ContactModel(
+        name: nameController.text,
+        mobile: mobileController.text,
+        email: emailController.text,
+        company: companyController.text,
+        designation: designationController.text,
+        address: addressController.text,
+        website: websiteController.text,
+      );
+      Provider.of<ContractProvider>(context, listen: false)
+      .insertContract(contract)
+      .then((rowId) {
+        if(rowId>0){
+          Navigator.pop(context);
+        }
+      });
     }
   }
 
