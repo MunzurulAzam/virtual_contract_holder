@@ -31,10 +31,15 @@ class DbHelper{
     final mapList = await db.query(tableContact);
     return List.generate(mapList.length, (index) => ContactModel.fromMap(mapList[index]));
   }
-  //********************************* for delete id
+  //********************************* for delete
 
 Future<int> deleteContract(int id) async{
     final db = await _open();
     return db.delete(tableContact, where: '$tblContactColId = ?', whereArgs: [id]);
+}
+// *************************** for update
+Future<int> updateContractField (int id, Map<String, dynamic> map) async{
+   final db =  await _open();
+   return db.update(tableContact, map, where: '$tblContactColId = ?', whereArgs: [id]);
 }
 }
