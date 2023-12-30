@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -64,27 +66,43 @@ class _ContractDetailPageState extends State<ContractDetailPage> {
                         ),
                       ],
                     ),
-                  ),ListTile(
-                    title: Text(contract.address.isEmpty ? 'Not Found' : contract.address ),
+                  ),
+                  ListTile(
+                    title: Text(contract.email.isEmpty ? 'Not Found' : contract.email),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
                           onPressed: () {
-                            _addressContract(contract.address);
+                            contract.email.isNotEmpty ? _emailContract(contract.email) : null;
+                          },
+                          icon: const Icon(Icons.email),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(contract.address.isEmpty ? 'Not Found' : contract.address),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            contract.address.isNotEmpty ? _addressContract(contract.address) : null;
                           },
                           icon: const Icon(Icons.location_on_outlined),
                         ),
                       ],
                     ),
-                  ),ListTile(
+                  ),
+                  ListTile(
                     title: Text(contract.website.isEmpty ? 'Not found' : contract.website),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
                           onPressed: () {
-                            _webContract(contract.website);
+                            contract.website.isNotEmpty ? _webContract(contract.website) : null;
                           },
                           icon: const Icon(Icons.web_sharp),
                         ),
@@ -103,29 +121,54 @@ class _ContractDetailPageState extends State<ContractDetailPage> {
       ),
     );
   }
-
+//................................................................... for send sms
   void _smsContract(String mobile) async {
     final url = 'sms:$mobile';
-    if(await canLaunchUrlString(url)){
+    if (await canLaunchUrlString(url)) {
       await launchUrlString(url);
-    } else{
+    } else {
       ShowMsg(context, 'Can not perform this task');
     }
-
   }
-
+//..................................................................... for send call
   void _callContract(String mobile) async {
     final url = 'tel:$mobile';
-    if(await canLaunchUrlString(url)){
-    await launchUrlString(url);
-    } else{
-    ShowMsg(context, 'Can not perform this task');
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
+    } else {
+      ShowMsg(context, 'Can not perform this task');
     }
   }
-
-  void _addressContract(String address) {
-
+//...................................................................... for send location
+  void _addressContract(String address) async {
+    String url = '';
+    if (Platform.isAndroid) {
+      url = 'geo:0,0?q=$address';
+    } else {
+      url = 'http://maps.apple.com/?q=$address';
+    }
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
+    } else {
+      ShowMsg(context, 'Cannot perform this task');
+    }
   }
-
-  void _webContract(String website) {}
+//...................................................................... for send website in the browser
+  void _webContract(String website) async {
+    final url = 'https://$website';
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
+    } else {
+      ShowMsg(context, 'Could not perform this operation');
+    }
+  }
+//....................................................................... for send email
+  void _emailContract(String email) async {
+    final url = 'mailto:$email';
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
+    } else {
+      ShowMsg(context, 'Cannot perform this task');
+    }
+  }
 }
