@@ -5,6 +5,8 @@ import 'package:vertualcardview/pages/form_page.dart';
 import 'package:vertualcardview/providers/contract_provider.dart';
 import 'package:vertualcardview/utils/show_msg.dart';
 
+import 'contract_detail_page.dart';
+
 class Homepage extends StatefulWidget {
   static const String routeName = '/';
 
@@ -88,6 +90,7 @@ class _HomepageState extends State<Homepage> {
                     ShowMsg(context, 'Deleted');
                   },
                   child: ListTile(
+                    onTap: () => Navigator.pushNamed(context, ContractDetailPage.routeName, arguments: contract.id),
                     title: Text(contract.name),
                     trailing: IconButton(
                       onPressed: () {

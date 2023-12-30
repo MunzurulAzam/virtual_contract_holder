@@ -32,4 +32,9 @@ class ContractProvider extends ChangeNotifier{
     contractList[index].favorite = !contractList[index].favorite;
     notifyListeners();
   }
+  //..................................................................... call [get contract by id] method
+
+  Future<ContactModel> getAllContractById(int id){
+    return db.getAllContractById(id);
+  }
 }
