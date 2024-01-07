@@ -49,7 +49,7 @@ class ContactModel {
       tblContactColAddress : address,
       tblContactColWebsite : website,
       tblContactColImage : image,
-      tblContactColFavorite : favorite ? 0 : 1,
+      tblContactColFavorite : favorite ? 1 : 0,
     };
     if(id > 0) {
       map[tblContactColId] = id;

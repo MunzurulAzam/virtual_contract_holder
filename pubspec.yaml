@@ -39,6 +39,7 @@ dependencies:
   sqflite:
   url_launcher:
   image_picker:
+  google_mlkit_text_recognition: ^0.11.0
 
 dev_dependencies:
   flutter_test:

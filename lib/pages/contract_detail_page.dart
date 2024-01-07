@@ -38,7 +38,12 @@ class _ContractDetailPageState extends State<ContractDetailPage> {
               final contract = snapshot.data!;
               return ListView(
                 children: [
-                  Image.asset(
+                  contract.image.isNotEmpty ? Image.file(
+                    File(contract.image),
+                    width: double.infinity,
+                    height: 250,
+                    fit: BoxFit.cover,
+                  ) : Image.asset(
                     contract.image,
                     width: double.infinity,
                     height: 250,

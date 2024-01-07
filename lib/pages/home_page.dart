@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vertualcardview/models/contact_model.dart';
 import 'package:vertualcardview/pages/form_page.dart';
+import 'package:vertualcardview/pages/scan_pages.dart';
 import 'package:vertualcardview/providers/contract_provider.dart';
 import 'package:vertualcardview/utils/show_msg.dart';
 
@@ -19,6 +20,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   int selectedIndex = 0;
   bool isFirst = true;
+  String name = '', mobile = '', email = '', address = '', company = '', designation = '', website = '', image = '';
 
   @override
   void didChangeDependencies() {
@@ -34,14 +36,22 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Contract'),
+          actions: [
+            GestureDetector(
+                onTap: _goToFromPage,
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 38),
+                  child: Icon(Icons.add),
+                ))
+          ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, FromPage.routeName);
+            Navigator.pushNamed(context, ScanPage.routeName);
           },
           shape: CircleBorder(),
-          child: const Icon(Icons.add),
+          child: const Icon(Icons.document_scanner_outlined),
         ),
         bottomNavigationBar: BottomAppBar(
           padding: EdgeInsets.zero,
@@ -127,5 +137,18 @@ class _HomepageState extends State<Homepage> {
                     child: const Text('yes')),
               ],
             ));
+  }
+
+  void _goToFromPage() {
+    final contract = ContactModel(
+      name: name,
+      mobile: mobile,
+      email: email,
+      address: address,
+      company: company,
+      designation: designation,
+      website: website,
+    );
+    Navigator.pushNamed(context, FromPage.routeName, arguments: contract);
   }
 }
